@@ -28,12 +28,7 @@ async function invokeAction({ action, id, name, email, phone }) {
 
       case "get":
         const contact = await contacts.getContactById(id);
-        if (contact) {
-          console.log(contact);
-        } else {
-          console.warn("Контакт не знайдений!");
-        }
-        break;
+        return console.log(contact) || null;
 
       case "add":
         const newContact = await contacts.addContact(name, email, phone);
