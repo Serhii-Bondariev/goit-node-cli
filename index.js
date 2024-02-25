@@ -1,5 +1,7 @@
-import { program } from "commander";
+import { Command } from "commander";
 import * as contacts from "./contacts.js";
+
+const program = new Command();
 
 program
   .option(
@@ -11,7 +13,7 @@ program
   .option("-e, --email <string>", "Електронна пошта контакту")
   .option("-p, --phone <string>", "Номер телефону контакту");
 
-program.parse();
+program.parse(process.argv);
 
 const options = program.opts();
 
@@ -28,7 +30,8 @@ async function invokeAction({ action, id, name, email, phone }) {
 
       case "get":
         const contact = await contacts.getContactById(id);
-        return console.log(contact) || null;
+        console.log(contact !== null ? contact : null);
+        break;
 
       case "add":
         const newContact = await contacts.addContact(name, email, phone);
@@ -37,11 +40,7 @@ async function invokeAction({ action, id, name, email, phone }) {
 
       case "remove":
         const removedContact = await contacts.removeContact(id);
-        if (removedContact) {
-          console.log(removedContact);
-        } else {
-          console.warn("Контакт не знайдений!");
-        }
+        console.log(removedContact !== null ? removedContact : null);
         break;
 
       default:
